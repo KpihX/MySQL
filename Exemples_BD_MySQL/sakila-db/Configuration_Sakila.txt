@@ -1,0 +1,62 @@
+## Bing
+Bonjour, c'est Bing. Je peux vous aider à installer la base de données Sakila sur MySQL Ubuntu. Voici les étapes à suivre :
+- Allez sur le site de MySQL et téléchargez les fichiers pour la "base de données Sakila" sous la section "Bases de données d'exemple".
+- Extrayez les fichiers dans un répertoire temporaire, par exemple /tmp/sakila-db. Vous devriez avoir les fichiers sakila-schema.sql, sakila-data.sql et sakila.mwb.
+- Connectez-vous au serveur MySQL en utilisant le client mysql ou le shell mysqlsh, et fournissez un mot de passe.
+- Exécutez le script sakila-schema.sql pour créer la structure de la base de données, et exécutez le script sakila-data.sql pour remplir la base de données, en utilisant les commandes suivantes :
+
+mysql> SOURCE /tmp/sakila-db/sakila-schema.sql;
+mysql> SOURCE /tmp/sakila-db/sakila-data.sql;
+
+- Remplacez les chemins vers les fichiers sakila-schema.sql et sakila-data.sql par les chemins réels sur votre système.
+- Confirmez que la base de données d'exemple est installée correctement. Exécutez les instructions suivantes. Vous devriez voir une sortie similaire à celle-ci :
+
+mysql> USE sakila;
+Database changed
+mysql> SHOW FULL TABLES;
++----------------------------+------------+
+| Tables_in_sakila          | Table_type |
++----------------------------+------------+
+| actor                     | BASE TABLE |
+| actor_info                | VIEW       |
+| address                   | BASE TABLE |
+| category                  | BASE TABLE |
+| city                      | BASE TABLE |
+| country                   | BASE TABLE |
+| customer                  | BASE TABLE |
+| customer_list             | VIEW       |
+| film                      | BASE TABLE |
+| film_actor                | BASE TABLE |
+| film_category             | BASE TABLE |
+| film_list                 | VIEW       |
+| film_text                 | BASE TABLE |
+| inventory                 | BASE TABLE |
+| language                  | BASE TABLE |
+| nicer_but_slower_film_list| VIEW       |
+| payment                   | BASE TABLE |
+| rental                    | BASE TABLE |
+| sales_by_film_category    | VIEW       |
+| sales_by_store            | VIEW       |
+| staff                     | BASE TABLE |
+| staff_list                | VIEW       |
+| store                     | BASE TABLE |
++----------------------------+------------+
+23 rows in set (0.01 sec)
+
+mysql> SELECT COUNT (*) FROM film;
++----------+
+| COUNT (*) |
++----------+
+| 1000     |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT (*) FROM film_text;
++----------+
+| COUNT (*) |
++----------+
+| 1000     |
++----------+
+1 row in set (0.00 sec)
+
+J'espère que cela vous a été utile. Si vous avez d'autres questions, n'hésitez pas à me les poser. 😊.

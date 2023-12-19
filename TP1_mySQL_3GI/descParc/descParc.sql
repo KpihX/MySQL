@@ -1,0 +1,8 @@
+USE Parc;
+
+DESCRIBE Segment;
+DESCRIBE Salle;
+DESCRIBE Poste;
+DESCRIBE Logiciel;
+DESCRIBE Installer;
+DESCRIBE Types;

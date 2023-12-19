@@ -1,0 +1,21 @@
+USE Parc;
+
+-- Suppression des contraintes de clés étrangères
+/* ALTER TABLE Installer
+DROP FOREIGN KEY IF EXISTS nPoste,
+DROP FOREIGN KEY IF EXISTS nLog;
+
+ALTER TABLE Poste
+DROP FOREIGN KEY IF EXISTS indIP,
+DROP FOREIGN KEY IF EXISTS nSalle;
+
+ALTER TABLE Salle
+DROP FOREIGN KEY IF EXISTS indIP; */
+
+-- Suppression des tables
+DROP TABLE IF EXISTS Installer;
+DROP TABLE IF EXISTS Logiciel;
+DROP TABLE IF EXISTS Poste;
+DROP TABLE IF EXISTS Salle;
+DROP TABLE IF EXISTS Types;
+DROP TABLE IF EXISTS Segment;

@@ -1,0 +1,31 @@
+* Sur Ubuntu, pour utiliser mysql, il faut entrer ceci dans un terminal :
+    - sudo service mysql start
+
+    - mysql -u root -p
+
+* Email du chargé de TD : hermanbestpro@gmail.com
+
+* Si l'erreur se manifeste : 
+    ```mysql -u root -p
+    Enter password: 
+    ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock'```
+
+    Il faut executer ces commandes bash
+        - sudo cd /var/rub
+        - sudo mkdir mysqld (si ce dossier n'existe pas déjà)
+        - sudo cd mysqld
+        - sudo touch mysqld.sock
+
+        - sudo gedit /etc/mysql/my.cnf
+        //Remplaçer ce qui se trouve après les commentaires par :
+            ```
+            [client]
+            socket = /var/run/mysqld/mysqld.sock
+
+            [mysqld]
+            socket = /var/run/mysqld/mysqld.sock
+            !includedir /etc/mysql/conf.d/
+            ```
+        - sudo service mysql restart
+    
+    Ensuite il faut retenter la connection à mysql via le terminal, et il y a de fortes chances que le pb soit résolu.
