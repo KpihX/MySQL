@@ -53,7 +53,7 @@
         - sudo chmod +x /etc/init.d/mysql_startup.sh //Pour rendre le fichier executable
         - sudo update-rc.d mysql_startup.sh defaults // Pour ajouter le scipt au démarrage
 
-* Pour en savoir plus : 
+    * Pour en savoir plus : 
 
     - sudo cd /var/run : Cette commande change le répertoire courant vers /var/run, qui est un répertoire système où sont stockés les fichiers temporaires des processus en cours d’exécution. Le préfixe sudo signifie que la commande est exécutée avec les privilèges du superutilisateur (root), ce qui est nécessaire pour accéder à ce répertoire.
 
@@ -79,3 +79,6 @@
 
     - sudo service mysql restart : Cette commande redémarre le service MySQL, ce qui permet de prendre en compte les modifications apportées au fichier de configuration. Cela permet également au service MySQL de créer le fichier socket dans le sous-répertoire /var/run/mysqld/ s’il n’existe pas déjà.
 
+* Exple de connection sans socket : "mysql -h 127.0.0.1 -P 3306 -u root -p'password' --ssl-mode=DISABLED  nomBD"
+
+* source "path" : pour exécuter un fichier .sql via le shell sql

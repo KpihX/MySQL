@@ -1,8 +1,8 @@
--- Active: 1702171397384@@localhost@3306@TP_BD_3GI
+-- Active: 1703011903107@@127.0.0.1@3306@TP_BD_3GI
 USE TP_BD_3GI;
 
 -- III-2/ Insertion des données dans EMP et DEPT
-/*INSERT INTO EMP VALUES
+INSERT INTO EMP VALUES
     (7839, "KING", "PRESIDENT", NULL, "1981-11-17", 500, NULL, 10),
     (7698, "BLAKE", "MANAGER", 7839, "1981-05-01", 2850, NULL, 30),
     (7782, "CLARK", "MANAGER", 7839, "1981-06-09", 1500, NULL, 10),
@@ -22,7 +22,7 @@ INSERT INTO DEPT (DEPTNO, DNAME, LOC) VALUES
   (10, 'ACCOUNTING', 'NEW YORK'),
   (20, 'RESEARCH', 'DALLAS'),
   (30, 'SALES', 'CHICAGO'),
-  (40, 'OPERATIONS', 'BOSTON');*/
+  (40, 'OPERATIONS', 'BOSTON');
 
 -- III-3/ Affichage du nom, job, date d'embauche et du matricule de chaque employé
 SELECT EMPNO, ENAME, JOB, HIREDATE 
@@ -237,12 +237,12 @@ JOIN EMP M ON E.MGR = M.EMPNO;
 -- Nous allons d'abord créer la table SALGRADE dans s3.sql
 -- On insère ensuite les enregistrements
 -- Insertion des valeurs dans la table SALGRADE
-/*INSERT INTO SALGRADE VALUES 
+INSERT INTO SALGRADE VALUES 
     (1, 700, 1200),
     (2, 1201, 1400),
     (3, 1401, 2000),
     (4, 2001, 3000),
-    (5, 3001, 9999);*/
+    (5, 3001, 9999);
 -- On effectue enfin la requête
 SELECT ENAME, JOB, DNAME, SAL, GRADE AS "Échelon"
 FROM EMP AS E
