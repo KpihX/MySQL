@@ -5,16 +5,15 @@
 
 * Email du chargé de TD : hermanbestpro@gmail.com
 
-* Si l'erreur se manifeste : 
+* Si une erreur simialaire à celle ci-dessous se manifeste : 
     ```mysql -u root -p
     Enter password: 
     ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock'```
 
     Il faut executer ces commandes bash
-        - sudo cd /var/rub
-        - sudo mkdir mysqld (si ce dossier n'existe pas déjà)
-        - sudo cd mysqld
-        - sudo touch mysqld.sock
+        - sudo cd /var/run
+        - sudo mkdir mysqld -p (si ce dossier n'existe pas déjà)
+        - sudo chown mysql ./mysqld
 
         - sudo gedit /etc/mysql/my.cnf
         //Remplaçer ce qui se trouve après les commentaires par :
@@ -29,3 +28,54 @@
         - sudo service mysql restart
     
     Ensuite il faut retenter la connection à mysql via le terminal, et il y a de fortes chances que le pb soit résolu.
+
+    * Si après un rédemarrage il apparait une erreur au lancement du 'sudo service mysql start'
+    il se pourrait que le dossier mysqld crée plus haut n'ait pas été automatiquement recréé au demarrage par mysql, 
+    vu que c'est un fichier temporaire
+
+        Dans ce cas, il faudra créer une têche qui fera cela au demarrage avec ces commandes :
+        - sudo nano /etc/init.d/mysql_startup.sh
+        //Ajouter le script suivant dans ce fichier :
+            #!/bin/bash
+            ### BEGIN INIT INFO
+            # Provides:          mysql_startup
+            # Required-Start:    $local_fs $remote_fs $network $syslog mysql
+            # Required-Stop:     $local_fs $remote_fs $network $syslog mysql
+            # Default-Start:     2 3 4 5
+            # Default-Stop:      0 1 6
+            # Short-Description: MySQL startup script
+            # Description:       Create mysqld directory and set permissions
+            ### END INIT INFO
+
+            mkdir -p /var/run/mysqld
+            chown mysql /var/run/mysqld
+        //Ce script crée le dossier mysqld et attribue les droits à l'utilisateur mysql.
+        - sudo chmod +x /etc/init.d/mysql_startup.sh //Pour rendre le fichier executable
+        - sudo update-rc.d mysql_startup.sh defaults // Pour ajouter le scipt au démarrage
+
+* Pour en savoir plus : 
+
+    - sudo cd /var/run : Cette commande change le répertoire courant vers /var/run, qui est un répertoire système où sont stockés les fichiers temporaires des processus en cours d’exécution. Le préfixe sudo signifie que la commande est exécutée avec les privilèges du superutilisateur (root), ce qui est nécessaire pour accéder à ce répertoire.
+
+    - sudo mkdir mysqld -p : Cette commande crée un sous-répertoire nommé mysqld dans le répertoire courant (/var/run). L’option -p permet de créer les répertoires parents si ils n’existent pas déjà. Ce sous-répertoire est utilisé par le service MySQL pour stocker son fichier socket, qui est un fichier spécial qui facilite la communication entre le serveur et les clients MySQL. Le fichier socket est nommé mysqld.sock et il est créé par le service MySQL automatiquement.
+
+    - sudo chown mysql ./mysqld : Cette commande change le propriétaire et le groupe du sous-répertoire mysqld vers l’utilisateur et le groupe mysql, qui sont ceux utilisés par le service MySQL. Cela permet au service MySQL d’avoir les permissions nécessaires pour créer et accéder au fichier socket dans ce sous-répertoire.
+
+    - sudo gedit /etc/mysql/my.cnf : Cette commande ouvre le fichier /etc/mysql/my.cnf avec l’éditeur de texte gedit. Ce fichier est un fichier de configuration pour le service MySQL. Il contient des options qui déterminent le comportement du service, comme le port, le socket, la taille du cache, etc12
+
+    //Remplaçer ce qui se trouve après les commentaires par : : Cette ligne indique qu’il faut remplacer le contenu du fichier /etc/mysql/my.cnf après les commentaires par le texte suivant :
+
+    ```
+    [client]
+    socket = /var/run/mysqld/mysqld.sock
+
+    [mysqld]
+    socket = /var/run/mysqld/mysqld.sock
+    !includedir /etc/mysql/conf.d/
+    ```
+    Ces lignes définissent l’option socket dans les sections [client] et [mysqld] du fichier de configuration. Cette option spécifie le nom et l’emplacement du fichier socket utilisé par le service MySQL et les clients MySQL pour se connecter. Il faut que ces valeurs soient cohérentes avec le sous-répertoire créé précédemment34
+
+    - La dernière ligne !includedir /etc/mysql/conf.d/ indique au service MySQL d’inclure les fichiers de configuration supplémentaires qui se trouvent dans le répertoire /etc/mysql/conf.d/. Cela permet de modulariser la configuration et de la rendre plus facile à maintenir.
+
+    - sudo service mysql restart : Cette commande redémarre le service MySQL, ce qui permet de prendre en compte les modifications apportées au fichier de configuration. Cela permet également au service MySQL de créer le fichier socket dans le sous-répertoire /var/run/mysqld/ s’il n’existe pas déjà.
+
